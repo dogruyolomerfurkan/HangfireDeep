@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace HangfireServer.Controllers;
+namespace MainApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]

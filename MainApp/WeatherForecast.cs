@@ -1,4 +1,4 @@
-namespace HangfireServer;
+namespace MainApp;
 
 public class WeatherForecast
 {
