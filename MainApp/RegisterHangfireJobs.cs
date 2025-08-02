@@ -5,11 +5,16 @@ namespace MainApp;
 
 public class RegisterHangfireJobs
 {
-    public void RegisterJobs()
+    public static void RegisterJobs()
     {
         RecurringJob.AddOrUpdate<IRecurringJobs>("TestConcurrentExecutionJob",
             queue: "concurrent",
-            x => x.TestConcurrentExecution(),
-            "* * * * *");
+            x => x.TestConcurrentExecutionAndCancellation(JobCancellationToken.Null),
+            "5 * * * *",
+            options: new RecurringJobOptions
+            {
+                TimeZone = TimeZoneInfo.Utc,
+                MisfireHandling = MisfireHandlingMode.Relaxed
+            });
     }
 }

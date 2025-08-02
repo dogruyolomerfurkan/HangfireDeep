@@ -31,7 +31,7 @@ app.UseHttpsRedirection();
 app.UseHangfireDashboard();
 app.UseAuthorization();
 var hangfireJobs = app.Services.GetRequiredService<RegisterHangfireJobs>();
-hangfireJobs.RegisterJobs();
+RegisterHangfireJobs.RegisterJobs();
 app.MapControllers();
 
 app.Run();
