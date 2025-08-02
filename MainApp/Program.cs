@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddSingleton<RegisterHangfireJobs>();
 
 builder.Services.AddHangfire(gc =>
 {
@@ -28,10 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseHangfireDashboard();
 app.UseAuthorization();
-var hangfireJobs = app.Services.GetRequiredService<RegisterHangfireJobs>();
-RegisterHangfireJobs.RegisterJobs();
+
 app.MapControllers();
 
 app.Run();

@@ -1,5 +1,6 @@
 using Hangfire;
 using Hangfire.PostgreSql;
+using HangfireServer;
 using HangfireServer.HangfireJobs;
 using HangfireServer.HangfireSetup;
 using Signatures;
@@ -28,6 +29,7 @@ builder.Services.AddHangfire(gc =>
                 CountersAggregateInterval = TimeSpan.FromSeconds(60)
             });
 });
+builder.Services.AddSingleton<RegisterHangfireJobs>();
 
 var hangfireServers = builder.Configuration.GetSection(nameof(HangfireSettings)).Get<HangfireSettings>();
 
@@ -47,5 +49,7 @@ foreach (var hangfireServer in hangfireServers.Servers)
 var app = builder.Build();
 app.UseHangfireDashboard();
 app.UseHttpsRedirection();
-
+app.Services
+    .GetRequiredService<RegisterHangfireJobs>()
+    .RegisterJobs();
 app.Run();
