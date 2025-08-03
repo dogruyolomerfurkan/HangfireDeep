@@ -14,7 +14,7 @@ builder.Services.AddHangfire(gc =>
 {
     gc.UseSimpleAssemblyNameTypeSerializer()
         .UseDefaultTypeSerializer()
-        .UseFilter(new AutomaticRetryAttribute() { Attempts = 3, DelaysInSeconds = [10, 15, 20] })
+        .UseFilter(new AutomaticRetryAttribute { Attempts = 3, DelaysInSeconds = [10, 15, 20] })
         .UsePostgreSqlStorage(
             options =>
             {
@@ -22,12 +22,17 @@ builder.Services.AddHangfire(gc =>
             },
             new PostgreSqlStorageOptions
             {
-                QueuePollInterval = TimeSpan.FromSeconds(50),
+                QueuePollInterval = TimeSpan.FromSeconds(5),
                 PrepareSchemaIfNecessary = true,
                 UseSlidingInvisibilityTimeout = true,
                 InvisibilityTimeout = TimeSpan.FromHours(2),
-                CountersAggregateInterval = TimeSpan.FromSeconds(60)
-            });
+                CountersAggregateInterval = TimeSpan.FromSeconds(60),
+                //Success verisinin kaçarlı silineceğini belirtir
+                DeleteExpiredBatchSize = 1000,
+                //Success verisinin silinmesini kontrol eden jobun ne kadar zaman aralığında çalışacağını belirler
+                JobExpirationCheckInterval = TimeSpan.FromSeconds(50)
+                //Job'ın ne zaman expire olacağını belirler
+            }).WithJobExpirationTimeout(TimeSpan.FromSeconds(40));
 });
 builder.Services.AddSingleton<RegisterHangfireJobs>();
 

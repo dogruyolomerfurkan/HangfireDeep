@@ -26,7 +26,7 @@ public class Implementations(IBackgroundJobClient backgroundJobClient) : IRecurr
         }
     }
     [Queue("concurrent")]
-    public async Task PerformWorkCancellation(int i, IJobCancellationToken? cancellationToken)
+    public async Task PerformWorkCancellation(int i, IJobCancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         Console.WriteLine($"Doing work #{i}");

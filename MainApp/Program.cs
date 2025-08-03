@@ -1,6 +1,5 @@
 using Hangfire;
 using Hangfire.PostgreSql;
-using MainApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
